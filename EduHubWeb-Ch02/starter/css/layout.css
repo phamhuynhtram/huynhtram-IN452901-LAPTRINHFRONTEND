@@ -1,0 +1,181 @@
+/* ==========================================================================
+   layout.css — khung trang: container, header, footer, lưới nội dung
+   Mobile-first: CSS ngoài @media là giao diện điện thoại.
+   Chỉ dùng 2 mốc: @media (width >= 40rem) và @media (width >= 64rem).
+   Tra tên class trong README.md (mục "Class có sẵn trong HTML").
+   ========================================================================== */
+
+/* TODO(ch2-T3): .container — rộng tối đa --container-max, căn giữa (margin-inline: auto),
+   padding-inline --space-4, từ 40rem tăng lên --space-6 */
+
+/* TODO(ch2-T3): .site-header nền --color-header-bg; từ 40rem: position: sticky; top 0.
+   .site-header__inner và .site-nav__list dùng Flexbox (flex-wrap: wrap, gap, align-items: center,
+   justify-content: space-between); bỏ dấu chấm của list */
+
+/* TODO(ch2-T3): .site-footer nền tối, chữ nhỏ; .site-footer__inner cột dọc, từ 64rem thành hàng ngang */
+
+/* TODO(ch2-T3): .page (padding trên dưới), .page--narrow (hẹp lại cho form), .page__intro (tối đa 60ch),
+   .section, .section__head (Flexbox: tiêu đề trái, link "Xem tất cả" phải) */
+
+/* TODO(ch2-T3): .hero — Grid 1 cột, nền gradient từ primary tới màu tối, chữ trắng, bo góc lớn;
+   từ 64rem: grid-template-columns 2 cột */
+
+/* TODO(ch2-T4): .card-grid — display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap; bỏ list-style.
+   KHÔNG dùng media query cho lưới này. */
+
+/* TODO(ch2-T5): .detail — Grid 1 cột; từ 64rem: 2 cột (2fr và 1fr) với grid-template-areas
+     "head head" "media info" "content info" "prep info" "foot foot".
+   Gán grid-area cho .detail__head/__media/__info/__content/__prep/__foot CHỈ BÊN TRONG media query.
+   .detail__info: align-self: start; position: sticky; top chừa chỗ cho header */
+.container {
+  inline-size: 100%;
+  max-inline-size: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+
+  @media (width >= 40rem) {
+    padding-inline: var(--space-6);
+  }
+}
+
+.site-header {
+  background-color: var(--color-header-bg);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+
+  @media (width >= 40rem) {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-3);
+  }
+}
+
+.site-nav {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 0;
+  list-style: none;
+}
+.site-footer {
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
+  font-size: var(--text-sm);
+  padding-block: var(--space-8);
+  margin-block-start: var(--space-12);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+
+    @media (width >= 64rem) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+.page {
+  padding-block: var(--space-8);
+
+  &--narrow {
+    max-inline-size: 48rem;
+    margin-inline: auto;
+  }
+
+  &__intro {
+    max-inline-size: 60ch;
+    margin-block-end: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+}
+
+.section {
+  margin-block-end: var(--space-12);
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-block-end: var(--space-6);
+  }
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: center;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--palette-blue-900), var(--palette-blue-700));
+  color: var(--palette-white);
+
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: var(--space-12);
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: var(--space-6);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+
+  @media (width >= 64rem) {
+    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+    grid-template-areas:
+      "head head"
+      "media info"
+      "content info"
+      "prep info"
+      "foot foot";
+    column-gap: var(--space-8);
+
+    &__head { grid-area: head; }
+    &__media { grid-area: media; }
+    &__content { grid-area: content; }
+    &__prep { grid-area: prep; }
+    &__foot { grid-area: foot; }
+    &__info {
+      grid-area: info;
+      align-self: start;
+      position: sticky;
+      inset-block-start: 6rem;
+    }
+  }
+}
